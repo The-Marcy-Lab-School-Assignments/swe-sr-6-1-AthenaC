@@ -20,6 +20,7 @@ Would you use a stack or a queue to implement this functionality?
 In your response, explain what a Stack/Queue is and why it would be best for this use case. Make sure that your response includes the terms LIFO or FIFO.
 
 ### Response 2
+I would use a stack, a linear data structure ordered by last-in, first-out to implement this "back" button functionality. Since a stack's functions for adding (`push`) and removing (`pop`) elements both do so to its "top", the user's initial webpage, at the "top" can be popped, making way for their previously visited webpage to now be at the "top" of their browser's stack. While a queue is also a linear, sequential data structure, it is based on first-in, first-out, such that the methods for adding and removing elements do not affect the same ends of the queue: while `enqueue` adds to its end, `dequeue` removes from the front. This means that queues cannot as straightforwardly remove elements in the same order they were added. Given how queues' methods affect different ends, accessing the most recent, previous tab would require the removal or dequeuing of all other tabs, preventing further access to past history.
 
 ## Prompt 3
 
@@ -33,5 +34,21 @@ A few classic problems involving a stack are the `isBalanced` and `isPalindrome`
 
 ### Response 4
 
+```js
+const isBalanced = (str) => {
+	if (inputString[0] === ")") return false;
 
+    let bal = new Stack();
+    for (let i = 0; i < inputString.length; i++) {
+        if (inputString[i] === ")" && bal.peek() === "(") {
+            bal.pop();
+            continue;
+        }
+        bal.push(inputString[i]);
+    }
+    return bal.isEmpty();
+}
 
+```
+
+This function takes in a String parameter, named `str`, which has a length greater than zero and contains only start and end parentheses. If the zeroth index value of `str` is an end parenthese, it immediately returns false because that set of parentheses is incomplete: it lacks a starting parenthese, which must come before the end. Next, `bal`, a Stack is created. Through iteration, this function either adds the value of the index `i` in `str` being checked to `bal` or, if the value at the current index is a closing parenthese, and the most recent value in `bal` is a starting parenthese, removes that starting parenthese from `bal` and moves on to the next iteration. After all iterations are complete, the function returns a Boolean based on whether `bal` is empty. This works because balanced sets of parentheses will, after numerous removals and even if nested, eventually comprise of consecutive opening and closing parentheses. When parentheses of `str` are nested, this function removes the innermost set of parentheses and removes each set toward the outermost. If a closing parenthese is not part of a balanced set, it will not be removed, such that the stack will not be empty and the length of `bal` will be greater than zero.
